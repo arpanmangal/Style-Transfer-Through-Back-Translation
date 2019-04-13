@@ -6,6 +6,7 @@ import argparse
 import math
 import codecs
 import sys
+from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description='translate.py')
 
@@ -46,6 +47,7 @@ def addone(f):
     yield None
 
 def main():
+    print ('in main')
     opt = parser.parse_args()
     opt.cuda = opt.gpu > -1
     if opt.cuda:
@@ -58,7 +60,7 @@ def main():
     count = 0
     total_correct, total_words, total_loss = 0, 0, 0
     outputs, predictions, sents = [], [], []
-    for line in addone(codecs.open(opt.src, "r", "utf-8")):
+    for line in tqdm(addone(codecs.open(opt.src, "r", "utf-8"))):
         count += 1
         if line is not None:
             sents.append(line)

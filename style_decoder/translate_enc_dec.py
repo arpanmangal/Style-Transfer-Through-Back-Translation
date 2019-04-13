@@ -11,12 +11,12 @@ parser = argparse.ArgumentParser(description='translate.py')
 
 ## When using english-french trained MT model, uncomment -model
 ## and comment -encoder_model and -decoder_model
-parser.add_argument('-model', required=True,
-                   help='Path to model .pt file')
-# parser.add_argument('-encoder_model', required=True,
-#                     help='Path to model .pt file')
-# parser.add_argument('-decoder_model', required=True,
-#                     help='Path to model .pt file')
+# parser.add_argument('-model', required=True,
+#                    help='Path to model .pt file')
+parser.add_argument('-encoder_model', required=True,
+                    help='Path to model .pt file')
+parser.add_argument('-decoder_model', required=True,
+                    help='Path to model .pt file')
 parser.add_argument('-src',   required=True,
                     help='Source sequence to decode (one line per sequence)')
 parser.add_argument('-tgt',
@@ -58,14 +58,14 @@ def addone(f):
     yield None
 
 def main():
-    print('in main')
+    print ('in main')
     opt = parser.parse_args()
     opt.cuda = opt.gpu > -1
     if opt.cuda:
         torch.cuda.set_device(opt.gpu)
 
-    translator = onmt.Translator(opt)
-    # translator = onmt.Translator_style(opt)
+    # translator = onmt.Translator(opt)
+    translator = onmt.Translator_style(opt)
 
     outF = codecs.open(opt.output, 'w', 'utf-8')
 
@@ -75,11 +75,10 @@ def main():
 
     count = 0
 
-    print('opening the opt.tgt')
     tgtF = open(opt.tgt) if opt.tgt else None
     print ('starting the for loop')
     for line in tqdm(addone(codecs.open(opt.src, "r", "utf-8"))):
-        # print ('an iter')
+        
         if line is not None:
             srcTokens = line.split()
             srcBatch += [srcTokens]
@@ -94,8 +93,15 @@ def main():
             if len(srcBatch) == 0:
                 break
 
-        predBatch, predScore, goldScore = translator.translate(srcBatch, tgtBatch)
- 
+        try:
+            predBatch, predScore, goldScore = translator.translate(srcBatch, tgtBatch)
+        except:
+            print (line)
+            print ()
+            print (srcBatch)
+            print ()
+            print (tgtBatch)
+            exit(0)
         predScoreTotal += sum(score[0] for score in predScore)
         predWordsTotal += sum(len(x[0]) for x in predBatch)
         if tgtF is not None:
