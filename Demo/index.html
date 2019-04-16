@@ -26,6 +26,16 @@
       margin-bottom: 0px;
     }
 
+    meter {
+      width: 100%;
+      /* height: 100%; */
+    }
+
+    meter::-webkit-meter-optimum-value, meter::-webkit-meter-suboptimum-value, meter::-webkit-meter-even-less-good-value {
+      transition: 0.5s width;
+    }
+
+
   </style>
 
 </head>
@@ -59,6 +69,20 @@
     <div class="col-sm-3"></div>
   </div>
   
+  <br />
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <meter low="69" high="70" max="100"
+      value="20" id="hate-meter">B</meter>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+  <div class="row" style="text-align:center">
+    <div class="col-sm-12">Hate Meter</div>
+  </div>
+
+  <br />
   <div class="row">
     <div class="col-sm-12">
       <div class="form-group">
@@ -91,28 +115,21 @@
   </div>
 </div>
 
-<p class="text-center text-muted" id="footer">© Copyright 2019 Arpan Mangal, Deepanshu Jindal</p>
+<p class="text-center text-muted" id="footer">© Copyright 2019, Arpan Mangal, Deepanshu Jindal</p>
 
 <script>
   $('#hate-form').submit((e) => {
     e.preventDefault();
 
     let form = $(this);
-    let hateInput, nohateOutput;
-    let inputs = document.getElementsByTagName('input');
-    for (let i = 0; i < inputs.length; i++) {
-        let inp = inputs[i];
-        if (inp.name == 'hate') hateInput = inp;
-        else if (inp.name == 'nohate') nohateOutput = inp;
-    }
 
     $.ajax({
       type: "POST",
       url: "/convert",
-      data: JSON.stringify({'sentence': hateInput.value}),
+      data: JSON.stringify({'sentence': $('input[name=hate]').val()}),
       contentType: 'application/json',
       success: function (resData, textStatus, jqXHR) {
-        nohateOutput.value = resData;
+        $('input[name=nohate]').val(resData);
       },
       error: function (jqXHR, textStatus, errorThrown) {
         alert('Sorry some error occured');
@@ -126,6 +143,33 @@
     let ex = $(exId).html();
     $('#hate').val(ex);
   }
+
+  // let counter = 0;
+  // $('input[name=hate]').on('keyup', function() {
+    
+  //   console.log('e');
+  // });
+  let hateInput = '';
+  setInterval(() => {
+    newInput = $('input[name=hate]').val();
+    if (newInput === hateInput) return;
+    hateInput = newInput;
+
+    $.ajax({
+      type: "POST",
+      url: "/classify",
+      data: JSON.stringify({'sentence': $('input[name=hate]').val()}),
+      contentType: 'application/json',
+      success: function (resData, textStatus, jqXHR) {
+        let hateVal = (resData === '1') ? 80 : 20;
+        $('#hate-meter').val(hateVal);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(textStatus);
+      }
+    })
+  }, 800);
+
 </script>
 </body>
 </html>
