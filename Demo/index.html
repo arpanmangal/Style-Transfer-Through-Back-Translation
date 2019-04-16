@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Style Transfer</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -37,33 +37,37 @@
 </div>
 
 <div class="container">
+  <form action="/convert" method="POST" id="hate-form">
   <div class="row">
     <div class="col-sm-12">
         <div class="form-group">
           <label for="hate">Enter your thoughts:</label>
-          <input type="text" class="form-control" id="hate">
+          <input type="text" class="form-control" id="hate" name="hate">
+          <!-- <input type="submit" value="Submit"> -->
         </div>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-3"></div>
     <div class="col-sm-3">
-      <button type="button" class="btn btn-primary btn-block">Submit</button>
+      <button type="submit" class="btn btn-primary btn-block" id="convert">Submit</button>
     </div>
     <!-- <div class="col-sm-1"></div> -->
     <div class="col-sm-3">
-      <button type="button" class="btn btn-danger btn-block">Reset</button>
+      <button type="reset" class="btn btn-danger btn-block">Reset</button>
     </div>
     <div class="col-sm-3"></div>
   </div>
+  
   <div class="row">
     <div class="col-sm-12">
       <div class="form-group">
         <label for="nohate">A better way:</label>
-        <input type="text" class="form-control" id="nohate">
+        <input type="text" class="form-control" id="nohate" name="nohate" disabled>
       </div>
     </div>
   </div>
+  </form>
 </div>
   
 <hr />
@@ -71,22 +75,57 @@
   <div class="row">
     <div class="col-sm-4">
       <h3>Example 1</h3>
-      <pre>This is example 1.</pre>
-      <button type="button" class="btn btn-success">Try this!</button>
+      <pre id="try1">This is example 1.</pre>
+      <button type="button" class="btn btn-success" onclick="tryExample(1)">Try this!</button>
     </div>
     <div class="col-sm-4">
       <h3>Example 2</h3>
-      <pre>This is example 2.</pre>
-      <button type="button" class="btn btn-success">Try this!</button>
+      <pre id="try2">This is example 2.</pre>
+      <button type="button" class="btn btn-success" onclick="tryExample(2)"> Try this!</button>
     </div>
     <div class="col-sm-4">
       <h3>Example 3</h3>
-      <pre>This is example 3.</pre>
-      <button type="button" class="btn btn-success">Try this!</button>
+      <pre id="try3">This is example 3.</pre>
+      <button type="button" class="btn btn-success" onclick="tryExample(3)">Try this!</button>
     </div>
   </div>
 </div>
 
 <p class="text-center text-muted" id="footer">© Copyright 2019 Arpan Mangal, Deepanshu Jindal</p>
+
+<script>
+  $('#hate-form').submit((e) => {
+    e.preventDefault();
+
+    let form = $(this);
+    let hateInput, nohateOutput;
+    let inputs = document.getElementsByTagName('input');
+    for (let i = 0; i < inputs.length; i++) {
+        let inp = inputs[i];
+        if (inp.name == 'hate') hateInput = inp;
+        else if (inp.name == 'nohate') nohateOutput = inp;
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/convert",
+      data: JSON.stringify({'sentence': hateInput.value}),
+      contentType: 'application/json',
+      success: function (resData, textStatus, jqXHR) {
+        nohateOutput.value = resData;
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert('Sorry some error occured');
+        console.log(textStatus);
+      }
+    });
+  });
+
+  let tryExample = (idx) => {
+    let exId = '#try' + idx;
+    let ex = $(exId).html();
+    $('#hate').val(ex);
+  }
+</script>
 </body>
 </html>

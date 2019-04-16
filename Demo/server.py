@@ -7,8 +7,8 @@ app = Flask(__name__)
 app.config.from_object('config.Development')
 
 ## API routes
-# app.add_url_rule('/api/gradesheet', view_func=views.getGradesheet, methods=['POST'])
-# app.add_url_rule('/api/grades', view_func=views.getGrades, methods=['POST'])
+app.add_url_rule('/classify', view_func=views.classify, methods=['POST'])
+app.add_url_rule('/convert', view_func=views.convert, methods=['POST'])
 
 
 ## Static Routes ##
