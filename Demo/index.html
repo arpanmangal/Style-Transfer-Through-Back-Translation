@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+  <style>
+    /* html, body {
+      height: 100%;
+    } */
+
+    body {
+      margin-bottom:50px;
+    }
+
+    #footer {
+      position: fixed;
+      height: 30px;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      margin-bottom: 0px;
+    }
+
+  </style>
+
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>Style Transfer: Saving the world from Hate Speech</h1>
+  <p>Rephrasing offensive sentences to non-offensive using style transfer techniques </p> 
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+          <label for="hate">Enter your thoughts:</label>
+          <input type="text" class="form-control" id="hate">
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3">
+      <button type="button" class="btn btn-primary btn-block">Submit</button>
+    </div>
+    <!-- <div class="col-sm-1"></div> -->
+    <div class="col-sm-3">
+      <button type="button" class="btn btn-danger btn-block">Reset</button>
+    </div>
+    <div class="col-sm-3"></div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="nohate">A better way:</label>
+        <input type="text" class="form-control" id="nohate">
+      </div>
+    </div>
+  </div>
+</div>
+  
+<hr />
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>Example 1</h3>
+      <pre>This is example 1.</pre>
+      <button type="button" class="btn btn-success">Try this!</button>
+    </div>
+    <div class="col-sm-4">
+      <h3>Example 2</h3>
+      <pre>This is example 2.</pre>
+      <button type="button" class="btn btn-success">Try this!</button>
+    </div>
+    <div class="col-sm-4">
+      <h3>Example 3</h3>
+      <pre>This is example 3.</pre>
+      <button type="button" class="btn btn-success">Try this!</button>
+    </div>
+  </div>
+</div>
+
+<p class="text-center text-muted" id="footer">© Copyright 2019 Arpan Mangal, Deepanshu Jindal</p>
+</body>
+</html>
