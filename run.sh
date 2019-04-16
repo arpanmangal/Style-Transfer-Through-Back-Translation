@@ -39,4 +39,5 @@
 # python style_decoder/translate_enc_dec.py -encoder_model models/translation/french_english/french_english.pt -decoder_model generator/hate_generator_acc_48.78_ppl_3.93_e13.pt -src data/hate.test.fr -output data/hate_to_nohate.txt -replace_unk $true -gpu 0
 
 # Test the accuracy of converted sentences
-python classifier/cnn_translate.py -model cmodel/hate_model_acc_99.32_loss_0.00_e13.pt -src data/hate_to_nohate.txt -tgt 'nohate' -label1 nohate -label0 hate -gpu 0
+# python classifier/cnn_translate.py -model cmodel/hate_model_acc_99.32_loss_0.00_e13.pt -src data/hate_to_nohate.txt -tgt 'nohate' -label1 nohate -label0 hate -gpu 0
+# python classifier/cnn_translate.py -model cmodel/hate_model_acc_99.32_loss_0.00_e13.pt -src data/hate_to_nohate_proc.txt -tgt 'nohate' -label1 nohate -label0 hate -gpu 0
